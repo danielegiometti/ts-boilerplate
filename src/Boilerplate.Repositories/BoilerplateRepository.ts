@@ -20,6 +20,7 @@ class BoilerplateRepository implements IBoilerplateRepository {
         const response = await this._httpClient.Get<ITodo>(url);
         return response;
     }
+    
     public async SendTodo(todo: ITodo): Promise<ITodo> {
         const url = `${this._appSettings.BoilerplateEndpoint}/todos`;
         const response = await this._httpClient.Post<ITodo, ITodo>(url, todo);

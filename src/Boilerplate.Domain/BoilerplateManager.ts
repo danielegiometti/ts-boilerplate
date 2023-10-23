@@ -5,6 +5,7 @@ import Symbols from '../Boilerplate.Models/Symbols';
 import IBoilerplateRepository from '../Boilerplate.Repositories/Interfaces/IBoilerplateRepository';
 import ICalendar from './Common/Interfaces/ICalendar';
 import IBoilerplateManager from './Interfaces/IBoilerplateManager';
+import ITodo from '../Boilerplate.Models/Interfaces/ITodo';
 
 @injectable()
 class BoilerplateManager implements IBoilerplateManager {
@@ -22,12 +23,16 @@ class BoilerplateManager implements IBoilerplateManager {
         this._boilerplateRepository = boilerplateRepository;
     }
 
-    public async Manage(payload: IBoilerPayload): Promise<void> {
+    public async Manage(payload: IBoilerPayload): Promise<ITodo> {
         try {
             this._logger.LogInfo('BoilerplateManager: Doing boilerplate things');
             const response = await this._boilerplateRepository.GetTodo(payload.prop1);
-            await this._boilerplateRepository.SendTodo(response);
+
+            // await this._boilerplateRepository.SendTodo(response);
+            
             this._logger.Commit(`BoilerplateManager: Just boilerplate things at time: ${this._calendar.Now().toISOString()}`, payload);
+
+            return response;
         } catch (e) {
             let error = e as Error;
             this._logger.LogError(error.message);
