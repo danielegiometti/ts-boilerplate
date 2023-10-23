@@ -29,7 +29,7 @@ class Logger implements ILogger {
 
     public Commit<T>(executionContext: string, payload: T): void {
         this._exceptionlessClient
-            .createLog(null, executionContext, this._logCollection.map((x) => x.errorLevel).indexOf('Error') === -1 ? 'Info' : 'Error')
+            .createLog('', executionContext, this._logCollection.map((x) => x.errorLevel).indexOf('Error') === -1 ? 'Info' : 'Error')
             .setProperty('Details', this._logCollection.map((x) => `${x.errorLevel} - ${x.message}`).join('\n'))
             .setProperty('Payload', JSON.stringify(payload))
             .submit();

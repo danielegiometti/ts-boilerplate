@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { expect } from 'chai';
 import { IMock, It, Mock, Times } from 'typemoq';
 import BoilerplateManager from '../../Boilerplate.Domain/BoilerplateManager';
 import ICalendar from '../../Boilerplate.Domain/Common/Interfaces/ICalendar';
@@ -55,7 +54,7 @@ describe('BoilerplateManager Unit Tests', () => {
         }
 
         // Assert
-        expect(wasCaught).to.be.true;
+        expect(wasCaught).toBeTruthy();
         logger.verify((x) => x.LogInfo(It.isAnyString()), Times.once());
         logger.verify((x) => x.LogError(It.isAnyString()), Times.once());
         logger.verify((x) => x.LogException(It.isAny()), Times.once());

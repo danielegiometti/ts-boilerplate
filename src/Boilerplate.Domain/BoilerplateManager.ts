@@ -29,10 +29,11 @@ class BoilerplateManager implements IBoilerplateManager {
             await this._boilerplateRepository.SendTodo(response);
             this._logger.Commit(`BoilerplateManager: Just boilerplate things at time: ${this._calendar.Now().toISOString()}`, payload);
         } catch (e) {
-            this._logger.LogError(e.message);
-            this._logger.LogException(e);
+            let error = e as Error;
+            this._logger.LogError(error.message);
+            this._logger.LogException(error);
             this._logger.Commit('BoilerplateManager: Just boilerplate things', payload);
-            throw new Error(e);
+            throw error;
         }
     }
 }

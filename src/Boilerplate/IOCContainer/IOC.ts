@@ -16,19 +16,19 @@ import IBoilerplateManager from '../../Boilerplate.Domain/Interfaces/IBoilerplat
 import IBoilerplateRepository from '../../Boilerplate.Repositories/Interfaces/IBoilerplateRepository';
 import BoilerplateRepository from '../../Boilerplate.Repositories/BoilerplateRepository';
 
-class IOC {
-    private _container: Container;
-
+class IOC {    
     public GetInstance() {
-        if (this._container != null) return this._container;
+        
         const container = new Container();
+
         this.ConfigureExceptionless(container);
+        
         container.bind<IHttpClient>(Symbols.HttpClient).to(HttpClient);
         container.bind<IAppSettings>(Symbols.AppSettings).toConstantValue(new AppSettings(appSettings));
         container.bind<ICalendar>(Symbols.Calendar).to(Calendar);
         container.bind<IBoilerplateRepository>(Symbols.BoilerplateRepository).to(BoilerplateRepository);
         container.bind<IBoilerplateManager>(Symbols.BoilerplateManager).to(BoilerplateManager);
-        this._container = container;
+
         return container;
     }
 

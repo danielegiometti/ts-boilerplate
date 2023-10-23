@@ -4,3 +4,10 @@ node_modules
 lib
 bundle
 .vs
+
+dist/**/*
+.DS_Store
+logs/service.log
+
+coverage/*
+*.xml

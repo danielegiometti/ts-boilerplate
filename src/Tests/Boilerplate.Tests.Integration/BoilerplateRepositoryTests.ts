@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import ITodo from '../../Boilerplate.Models/Interfaces/ITodo';
 import Symbols from '../../Boilerplate.Models/Symbols';
 import IBoilerplateRepository from '../../Boilerplate.Repositories/Interfaces/IBoilerplateRepository';
@@ -7,7 +6,7 @@ import IOC from '../../Boilerplate/IOCContainer/IOC';
 describe('BoilerplateRepository Integration Tests', () => {
     let sut: IBoilerplateRepository;
 
-    before(() => {
+    beforeEach(() => {
         const ioc = new IOC();
         const instance = ioc.GetInstance();
         sut = instance.get<IBoilerplateRepository>(Symbols.BoilerplateRepository);
@@ -21,8 +20,8 @@ describe('BoilerplateRepository Integration Tests', () => {
         const response = await sut.GetTodo(todoNo);
 
         // Assert
-        expect(response).is.not.null;
-        expect(response.id).is.equal(todoNo);
+        expect(response).not.toBeNull();
+        expect(response.id).toBe(todoNo);
     });
 
     it('SendTodo should successfully POST Todo', async () => {
@@ -33,6 +32,6 @@ describe('BoilerplateRepository Integration Tests', () => {
         const response = await sut.SendTodo(todo);
 
         // Assert
-        expect(response).is.not.null;
+        expect(response).not.toBeNull();
     });
 });

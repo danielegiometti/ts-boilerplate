@@ -1,15 +1,21 @@
 {
     "compilerOptions": {
-        "target": "ES2017",
-        "lib": ["es6", "dom"],
-        "types": ["reflect-metadata", "chai", "mocha", "typemoq", "node"],
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "types": ["reflect-metadata", "jest", "typemoq", "node"],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "ES2019",
+        "strict": true,
+        "strictNullChecks": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
         "sourceMap": true,
+        "noImplicitAny": false,
         "resolveJsonModule": true,
-        "outDir": "lib/src/",
-        "useDefineForClassFields": true
-    }
+        "skipLibCheck": true,
+        "esModuleInterop": true
+    },
+    "include": ["src/**/*"],
 }
+
