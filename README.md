@@ -2,7 +2,7 @@
 
 ## Summary
 
-This is a boilerplate app with some sample logic to easily create your own Typescript Lambda (with DI using Inversify). For hints on deployment, please take a look at the ECommerceMutagen project(s) in Teamcity/Octopus
+This is a boilerplate app with some sample logic to easily create your own Typescript Lambda (with DI using Inversify)
 
 ## Setup
 
