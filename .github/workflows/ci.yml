@@ -1,0 +1,67 @@
+name: ci
+on: [ push ]
+jobs:
+  build-and-publish:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::492126512829:role/gha-package-management
+          role-session-name: ${{ github.event.repository.name }}
+
+      - name: Install
+        run: npm install
+        working-directory: app
+
+      - name: Lint
+        run: npm run lint
+        working-directory: app
+
+      - name: Test
+        run: npm test
+        working-directory: app
+
+      - name: Package
+        working-directory: app
+        shell: bash
+        run: |
+          zip -r app.zip .
+
+      - name: Publish
+        working-directory: app
+        shell: bash
+        run: |
+          BUCKET="tl-lambda-packages"
+          FUNCTION_NAME=${{ github.event.repository.name }}
+          VERSION=$(git rev-parse --short HEAD)
+
+          aws s3 cp app.zip s3://${BUCKET}/${FUNCTION_NAME}/${VERSION}.zip --acl bucket-owner-full-control
+
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: build-and-publish
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+      - id: spacelift-deploy
+        name: Spacelift Deploy
+        uses: trainline-private/trainline-actions/spacelift-deploy@main
+        with:
+          stack: ${{ github.event.repository.name }}-prod
+          sha: ${{ github.sha }}
+          SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+          SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
